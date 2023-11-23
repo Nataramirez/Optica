@@ -1,7 +1,11 @@
 package co.edu.uniquindio.Optica.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Optometra extends Empleado{
     private String horario;
+    public List<Diagnostico> listaDiagnosticos = new ArrayList<>();
 
     public Optometra() {}
 
@@ -16,6 +20,14 @@ public class Optometra extends Empleado{
 
     public void setHorario(String horario) {
         this.horario = horario;
+    }
+
+    public List<Diagnostico> getListaDiagnosticos() {
+        return listaDiagnosticos;
+    }
+
+    public void setListaDiagnosticos(List<Diagnostico> listaDiagnosticos) {
+        this.listaDiagnosticos = listaDiagnosticos;
     }
 
     @Override
