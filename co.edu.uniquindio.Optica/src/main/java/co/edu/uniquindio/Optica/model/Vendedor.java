@@ -1,7 +1,11 @@
 package co.edu.uniquindio.Optica.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Vendedor extends Empleado{
     private float comision;
+    public List<Venta> listaVentas = new ArrayList<>();
 
     public Vendedor() {}
 
@@ -18,10 +22,20 @@ public class Vendedor extends Empleado{
         this.comision = comision;
     }
 
+    public List<Venta> getListaVentas() {
+        return listaVentas;
+    }
+
+    public void setListaVentas(List<Venta> listaVentas) {
+        this.listaVentas = listaVentas;
+    }
+
     @Override
     public String toString() {
         return "Vendedor{" +
                 "comision=" + comision +
                 "} " + super.toString();
     }
+
+    public void salarioTotal(){}
 }

@@ -1,11 +1,16 @@
 package co.edu.uniquindio.Optica.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cliente {
     private String nombre;
     private String documento;
     private String telefono;
     private String correo;
     private int edad;
+    private Diagnostico diagnostico;
+    public List<Venta> listaVentas = new ArrayList<>();
     Optica ownedByOptica;
 
     public Cliente() {
@@ -61,6 +66,22 @@ public class Cliente {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public Diagnostico getDiagnostico() {
+        return diagnostico;
+    }
+
+    public void setDiagnostico(Diagnostico diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+
+    public List<Venta> getListaVentas() {
+        return listaVentas;
+    }
+
+    public void setListaVentas(List<Venta> listaVentas) {
+        this.listaVentas = listaVentas;
     }
 
     public Optica getOwnedByOptica() {

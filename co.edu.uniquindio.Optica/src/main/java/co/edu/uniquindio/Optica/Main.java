@@ -3,11 +3,13 @@ package co.edu.uniquindio.Optica;
 import co.edu.uniquindio.Optica.database.ClienteDB;
 import co.edu.uniquindio.Optica.database.OptometraDB;
 import co.edu.uniquindio.Optica.database.VendedorDB;
-import co.edu.uniquindio.Optica.database.DiagnosticoDB;
+import co.edu.uniquindio.Optica.enums.*;
+import co.edu.uniquindio.Optica.model.Diagnostico;
 import co.edu.uniquindio.Optica.model.Optica;
 
 public class Main {
     public static void main(String[] args) {
+
         Optica optica = inicializarDatosPrueba();
     }
 
@@ -42,9 +44,15 @@ public class Main {
                     optometra.getHorario()
             );
         }
-        for (DiagnosticoDB diagnostico: DiagnosticoDB.values()) {
-            optica.crearDiagnostico(diagnostico.getGradoLente(), diagnostico.getProblemaVisual());
-        }
+
+        Diagnostico diagnostico1 = optica.crearDiagnostico(
+                GradoLente.GRADO_075,
+                ProblemaVisual.ASTIGMATISMO,
+                optica.getListaClientes().get(1),
+                optica.obtenerOptometras().get(1)
+        );
+
+        optica.crearLente(diagnostico1, Montura.ACERO_INOXIDABLE, Filtro.UV);
         return optica;
     }
 }
