@@ -3,7 +3,6 @@ package co.edu.uniquindio.Optica;
 import co.edu.uniquindio.Optica.database.ClienteDB;
 import co.edu.uniquindio.Optica.database.OptometraDB;
 import co.edu.uniquindio.Optica.database.VendedorDB;
-import co.edu.uniquindio.Optica.database.DiagnosticoDB;
 import co.edu.uniquindio.Optica.enums.*;
 import co.edu.uniquindio.Optica.model.Diagnostico;
 import co.edu.uniquindio.Optica.model.Optica;
