@@ -3,10 +3,14 @@ package co.edu.uniquindio.Optica.model;
 import co.edu.uniquindio.Optica.enums.Filtro;
 import co.edu.uniquindio.Optica.enums.Montura;
 
+import java.util.UUID;
+
 public class Lente {
+    private String id;
     private Diagnostico diagnostico;
     private Montura montura;
     private Filtro filtro;
+    private DetalleVenta detalleVenta;
     Optica ownedByOptica;
 
     public Lente(){}
@@ -14,6 +18,11 @@ public class Lente {
         this.diagnostico = diagnostico;
         this.montura = montura;
         this.filtro = filtro;
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public Diagnostico getDiagnostico() {
@@ -40,6 +49,14 @@ public class Lente {
         this.filtro = filtro;
     }
 
+    public DetalleVenta getDetalleVenta() {
+        return detalleVenta;
+    }
+
+    public void setDetalleVenta(DetalleVenta detalleVenta) {
+        this.detalleVenta = detalleVenta;
+    }
+
     public Optica getOwnedByOptica() {
         return ownedByOptica;
     }
@@ -51,7 +68,8 @@ public class Lente {
     @Override
     public String toString() {
         return "Lente{" +
-                "diagnostico=" + diagnostico +
+                "id='" + id + '\'' +
+                ", diagnostico=" + diagnostico +
                 ", montura=" + montura +
                 ", filtro=" + filtro +
                 '}';

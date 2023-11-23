@@ -7,21 +7,13 @@ import java.util.List;
 
 public class Optica {
 
-    public List<Vendedor> listaVendedores = new ArrayList<>();
+    public List<Empleado> listaEmpleados = new ArrayList<>();
     public List<Cliente> listaClientes = new ArrayList<>();
-    public List<Optometra> listaOptometras = new ArrayList<>();
     public List<Lente> listaLentes = new ArrayList<>();
     public List<Diagnostico> listaDiagnosticos = new ArrayList<>();
+    public List<Venta> listaVentas = new ArrayList<>();
 
     public Optica(){}
-
-    public List<Vendedor> getListaVendedores() {
-        return listaVendedores;
-    }
-
-    public void setListaVendedores(List<Vendedor> listaVendedores) {
-        this.listaVendedores = listaVendedores;
-    }
 
     public List<Cliente> getListaClientes() {
         return listaClientes;
@@ -29,14 +21,6 @@ public class Optica {
 
     public void setListaClientes(List<Cliente> listaClientes) {
         this.listaClientes = listaClientes;
-    }
-
-    public List<Optometra> getListaOptometras() {
-        return listaOptometras;
-    }
-
-    public void setListaOptometras(List<Optometra> listaOptometras) {
-        this.listaOptometras = listaOptometras;
     }
 
     public List<Lente> getListaLentes() {
@@ -53,6 +37,22 @@ public class Optica {
 
     public void setListaDiagnosticos(List<Diagnostico> listaDiagnosticos) {
         this.listaDiagnosticos = listaDiagnosticos;
+    }
+
+    public List<Empleado> getListaEmpleados() {
+        return listaEmpleados;
+    }
+
+    public void setListaEmpleados(List<Empleado> listaEmpleados) {
+        this.listaEmpleados = listaEmpleados;
+    }
+
+    public List<Venta> getListaVentas() {
+        return listaVentas;
+    }
+
+    public void setListaVentas(List<Venta> listaVentas) {
+        this.listaVentas = listaVentas;
     }
 
     /**
@@ -72,16 +72,16 @@ public class Optica {
                 }
             }
             case VENDEDOR: {
-                for (Vendedor vendedor: getListaVendedores()) {
-                    if(vendedor.getDocumento().equals(documento)){
+                for (Empleado empleado: getListaEmpleados()) {
+                    if(empleado.getDocumento().equals(documento)){
                         usuarioExiste = true;
                         break;
                     }
                 }
             }
             case OPTOMETRA: {
-                for (Optometra optometra: getListaOptometras()) {
-                    if(optometra.getDocumento().equals(documento)){
+                for (Empleado empleado: getListaEmpleados()) {
+                    if(empleado.getDocumento().equals(documento)){
                         usuarioExiste = true;
                         break;
                     };
@@ -91,6 +91,62 @@ public class Optica {
                 return usuarioExiste;
             }
         }
+    }
+
+    /**
+     * Método para verificar la existe un diagnóstico
+     * @param diagnosticoBuscado
+     * @return boolean
+     */
+    public boolean buscarDiagnostico(Diagnostico diagnosticoBuscado){
+        boolean diagnosticoExiste = false;
+        for (Diagnostico diagnostico: getListaDiagnosticos()) {
+            if(diagnostico.getId().equals(diagnosticoBuscado.getId())){
+                diagnosticoExiste = true;
+                break;
+            }
+        }
+        return diagnosticoExiste;
+    }
+
+    /**
+     * Método para buscar un diagnostico y validar su posterior creación
+     * @param gradoLente
+     * @param problemaVisual
+     * @param cliente
+     * @param optometra
+     * @return
+     */
+    public boolean buscarDiagnostico(GradoLente gradoLente, ProblemaVisual problemaVisual, Cliente cliente, Optometra optometra){
+        boolean diagnosticoExiste = false;
+        for (Diagnostico diagnostico: getListaDiagnosticos()) {
+            if(diagnostico.getGradoLente() == gradoLente &&
+                    diagnostico.getProblemaVisual() == problemaVisual &&
+                    diagnostico.getCliente() == cliente && diagnostico.getOptometra() == optometra){
+                diagnosticoExiste = true;
+                break;
+            }
+        }
+        return diagnosticoExiste;
+    }
+
+    /**
+     * Método para buscar lente
+     * @param diagnostico
+     * @param montura
+     * @param filtro
+     * @return
+     */
+    public boolean buscarLente(Diagnostico diagnostico, Montura montura, Filtro filtro){
+        boolean lenteExiste = false;
+        for (Lente lente: getListaLentes()) {
+            if(lente.getDiagnostico().equals(diagnostico) && lente.getMontura().equals(montura) &&
+                    lente.getFiltro().equals(filtro)){
+                lenteExiste = true;
+                break;
+            }
+        }
+        return lenteExiste;
     }
 
     /**
@@ -124,7 +180,7 @@ public class Optica {
     public boolean crearUsuario(String nombre, String documento, float salario, float comision) {
         if(!buscarUsuario(documento, TipoUsuario.VENDEDOR)){
             Vendedor vendedor = new Vendedor(nombre, documento, salario, comision);
-            getListaVendedores().add(vendedor);
+            getListaEmpleados().add(vendedor);
             return true;
         }
         return false;
@@ -141,32 +197,99 @@ public class Optica {
     public boolean crearUsuario(String nombre, String documento, float salario, String horario){
         if(!buscarUsuario(documento, TipoUsuario.OPTOMETRA)){
             Optometra optometra = new Optometra(nombre, documento, salario, horario);
-            getListaOptometras().add(optometra);
+            getListaEmpleados().add(optometra);
             return true;
         }
         return false;
     }
 
     /**
-     * Método para obtener listado de un tipo de usuario
-     * @param tipoUsuario
+     * Método para la creación de diagnósticos
+     * @param gradoLente
+     * @param problemaVisual
+     * @param cliente
+     * @param optometra
      * @return
      */
-    public List obtenerUsuario(TipoUsuario tipoUsuario){
-        switch (tipoUsuario){
-            case CLIENTE -> {
-                return getListaClientes();
-            }
-            case VENDEDOR -> {
-                return getListaVendedores();
-            }
-            case OPTOMETRA -> {
-                return getListaOptometras();
-            }
-            default -> {
-                return new ArrayList<>();
+    public Diagnostico crearDiagnostico(GradoLente gradoLente, ProblemaVisual problemaVisual, Cliente cliente, Optometra optometra) {
+        if (!buscarDiagnostico(gradoLente, problemaVisual, cliente, optometra)) {
+            Diagnostico diagnostico = new Diagnostico(gradoLente, problemaVisual, cliente, optometra);
+            getListaDiagnosticos().add(diagnostico);
+            cliente.setDiagnostico(diagnostico);
+            optometra.getListaDiagnosticos().add(diagnostico);
+            return diagnostico;
+        }
+        return new Diagnostico();
+    }
+
+    /**
+     * Método para crear lente
+     * @param diagnostico
+     * @param montura
+     * @param filtro
+     * @return
+     */
+    public boolean crearLente(Diagnostico diagnostico, Montura montura, Filtro filtro ){
+        if (!buscarLente(diagnostico, montura, filtro)){
+            Lente lente = new Lente(diagnostico, montura, filtro);
+            getListaLentes().add(lente);
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
+    /**
+     * Método para obtener listado de Optómetras
+     * @return
+     */
+    public ArrayList<Optometra> obtenerOptometras(){
+        ArrayList<Optometra> listaOptometras = new ArrayList<>();
+        for (Empleado empleado: getListaEmpleados()) {
+            if(empleado instanceof Optometra){
+                listaOptometras.add((Optometra) empleado);
             }
         }
+       return listaOptometras;
+    }
+
+    /**
+     * Método para optener listado de Vendedores
+     * @return
+     */
+    public ArrayList<Empleado> obtenerVendedores(){
+        List<Empleado> listaVendedores = new ArrayList<>();
+        for (Empleado empleado: getListaEmpleados()) {
+            if(empleado instanceof Vendedor){
+                listaVendedores.add(empleado);
+            }
+        }
+        return (ArrayList<Empleado>) listaVendedores;
+    }
+
+    /**
+     * Método para obtener listado de Clientes
+     * @return
+     */
+    public List<Cliente> obtenerClientes() {
+        return getListaClientes();
+    }
+
+    /**
+     * Método para obtener listado de diagnóticos
+     * @return
+     */
+    public List<Diagnostico> obtenerDiagnosticos() {
+        return getListaDiagnosticos();
+    }
+
+    /**
+     * Método para obtener listado de Lentes
+     * @return
+     */
+    public List<Lente> obtenerLentes() {
+        return getListaLentes();
     }
 
     /**
@@ -193,11 +316,11 @@ public class Optica {
             }
             case VENDEDOR -> {
                 if(!buscarUsuario(documento, TipoUsuario.VENDEDOR)){
-                    int tamanioLista = getListaVendedores().size();
+                    int tamanioLista = getListaEmpleados().size();
                     for(int i = 0; i < tamanioLista; i++){
-                        Vendedor vendedor = getListaVendedores().get(i);
-                        if(vendedor.getDocumento().equals(documento)){
-                            getListaClientes().remove(i);
+                        Empleado empleado = getListaEmpleados().get(i);
+                        if(empleado.getDocumento().equals(documento)){
+                            getListaEmpleados().remove(i);
                             usuarioEliminado = true;
                             break;
                         }
@@ -206,10 +329,10 @@ public class Optica {
             }
             case OPTOMETRA -> {
                 if (!buscarUsuario(documento, TipoUsuario.OPTOMETRA)){
-                    int tamanioLista = getListaOptometras().size();
+                    int tamanioLista = getListaEmpleados().size();
                     for(int i = 0; i < tamanioLista; i++){
-                        Optometra optometra = getListaOptometras().get(i);
-                        if(optometra.getDocumento().equals(documento)){
+                        Empleado empleado = getListaEmpleados().get(i);
+                        if(empleado.getDocumento().equals(documento)){
                             getListaClientes().remove(i);
                             usuarioEliminado = true;
                             break;
@@ -222,56 +345,39 @@ public class Optica {
     }
 
     /**
-     * Método para verificar la existe un diagnóstico
-     * @param gradoLente
-     * @param problemaVisual
-     * @return
-     */
-    public boolean buscarDiagnostico(GradoLente gradoLente, ProblemaVisual problemaVisual){
-        boolean diagnosticoExiste = false;
-        for (Diagnostico diagnostico: getListaDiagnosticos()) {
-            if(diagnostico.getGradoLente().getNombre().equalsIgnoreCase(gradoLente.getNombre()) &&
-            diagnostico.getProblemaVisual().getNombre().equalsIgnoreCase(problemaVisual.getNombre())){
-                diagnosticoExiste = true;
-                break;
-            }
-        }
-        return diagnosticoExiste;
-    }
-
-    /**
-     * Método para +la creación de diagnósticos
-     * @param gradoLente
-     * @param problemaVisual
-     * @return
-     */
-    public boolean crearDiagnostico(GradoLente gradoLente, ProblemaVisual problemaVisual){
-        if (!buscarDiagnostico(gradoLente, problemaVisual)){
-            Diagnostico diagnostico = new Diagnostico(gradoLente, problemaVisual);
-            getListaDiagnosticos().add(diagnostico);
-            return true;
-        }else {
-            return false;
-        }
-
-    }
-
-    /**
-     * Método para buscar lente
+     * Método para eliminar diagnosticos
      * @param diagnostico
-     * @param montura
-     * @param filtro
      * @return
      */
-    public boolean buscarLente(Diagnostico diagnostico, Montura montura, Filtro filtro){
-        boolean lenteExiste = false;
-        for (Lente lente: getListaLentes()) {
-            if(lente.getDiagnostico().equals(diagnostico) && lente.getMontura().equals(montura) &&
-                lente.getFiltro().equals(filtro)){
-                lenteExiste = true;
-                break;
+    public boolean eliminarDiagnostico(Diagnostico diagnostico){
+        boolean diagnosticoEliminado = false;
+        if(!buscarDiagnostico(diagnostico)){
+            int tamanioLista = getListaDiagnosticos().size();
+            for(int i = 0; i < tamanioLista; i++){
+                Diagnostico diagnosticoEncontrado = getListaDiagnosticos().get(i);
+                if(diagnosticoEncontrado.getId().equals(diagnostico.getId())){
+                    getListaClientes().remove(i);
+                    diagnosticoEliminado = true;
+                    break;
+                }
             }
         }
-        return lenteExiste;
+        return diagnosticoEliminado;
+    }
+
+    public boolean eliminarLente(Lente lente){
+        boolean lenteEliminado = false;
+        if(!buscarLente(lente.getDiagnostico(), lente.getMontura(), lente.getFiltro())){
+            int tamanioLista = getListaLentes().size();
+            for(int i = 0; i < tamanioLista; i++){
+                Lente lenteEncontrado = getListaLentes().get(i);
+                if(lenteEncontrado == lente){
+                    getListaLentes().remove(i);
+                    lenteEliminado = true;
+                    break;
+                }
+            }
+        }
+        return lenteEliminado;
     }
 }
