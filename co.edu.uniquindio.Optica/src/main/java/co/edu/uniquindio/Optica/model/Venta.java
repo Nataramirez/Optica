@@ -46,4 +46,11 @@ public class Venta {
                 ", listaDetalleVentas=" + listaDetalleVentas +
                 '}';
     }
+
+    public void calcularTotalVenta(List listaDetalleVentas){
+        float totalVenta = 0;
+        for ( int i=0; i<listaDetalleVentas.size(); i++) {
+            System.out.println(listaDetalleVentas.get(i));
+        }
+    }
 }
